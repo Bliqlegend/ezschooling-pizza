@@ -15,15 +15,12 @@ from django.contrib.auth import get_user_model
 from rest_framework import exceptions
 from .serializers import *
 # Create your views here.
-def index(request):
-    return HttpResponse('This is just the deployed API. It does not have any user interface. To check API please go to this link <br><a href="https://app.swaggerhub.com/apis-docs/shubhban29/C3-pizza/1.0.0">API interface</a>')
-
 
 class ResourceAPIView(APIView):
     permission_classes = [AllowAny]
     model = Pizza
     resource_serializer = PizzaSerializer
-    matching_condition = 'CREATE'
+    matching_condition = 0
 
     def get(self, request, pk):
         try:
@@ -33,7 +30,7 @@ class ResourceAPIView(APIView):
         serializer = self.resource_serializer(resource_item)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    def patch(self, request, pk):
+    def put(self, request, pk):
         try:
             resource_item = self.model.objects.get(pk=pk)
         except self.model.DoesNotExist:
@@ -44,7 +41,7 @@ class ResourceAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
     
-    def put(self, request, pk):
+    def post(self, request, pk):
             serializer = self.resource_serializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
@@ -61,7 +58,7 @@ class ResourceAPIView(APIView):
 
 class SetPagination(PageNumberPagination):
 
-    page_size = 50
+    page_size = 25
     page_size_query_param = 'count'
 
     def get_paginated_response(self, data):

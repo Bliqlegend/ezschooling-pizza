@@ -1,18 +1,17 @@
 from django.urls import path
-from .views import ResourceAPIView, GetListView,index
+from .views import ResourceAPIView, GetListView
 from .models import *
 from .serializers import *
 urlpatterns = [
-    path('',index),
-    path('pizza/<str:pk>', ResourceAPIView.as_view(
+    path('pizza/<int:pk>', ResourceAPIView.as_view(
         model = Pizza,
         resource_serializer = PizzaSerializer
     )),
-    path('pizza-size/<str:pk>', ResourceAPIView.as_view(
+    path('pizza-size/<int:pk>', ResourceAPIView.as_view(
         model = PizzaSize,
         resource_serializer = PizzaSizeSerializer
     )),
-    path('pizza-topping/<str:pk>', ResourceAPIView.as_view(
+    path('pizza-topping/<int:pk>', ResourceAPIView.as_view(
         model = PizzaTopping,
         resource_serializer = PizzaToppingSerializer
     )),
